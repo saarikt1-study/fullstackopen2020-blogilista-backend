@@ -4,7 +4,8 @@
   "description": "An exercise project for the course FullStackOpen2020",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/saarikt1-study/fullstackopen2020-blogilista-backend/issues"
   },
-  "homepage": "https://github.com/saarikt1-study/fullstackopen2020-blogilista-backend#readme"
+  "homepage": "https://github.com/saarikt1-study/fullstackopen2020-blogilista-backend#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.9"
+  }
 }
