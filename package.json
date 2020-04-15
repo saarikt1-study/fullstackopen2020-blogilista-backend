@@ -1,0 +1,19 @@
+{
+  "name": "fullstackopen2020-blogilista-backend",
+  "version": "1.0.0",
+  "description": "An exercise project for the course FullStackOpen2020",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saarikt1-study/fullstackopen2020-blogilista-backend.git"
+  },
+  "author": "Tommi Saarikangas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saarikt1-study/fullstackopen2020-blogilista-backend/issues"
+  },
+  "homepage": "https://github.com/saarikt1-study/fullstackopen2020-blogilista-backend#readme"
+}
