@@ -19,6 +19,8 @@
   "homepage": "https://github.com/saarikt1-study/fullstackopen2020-blogilista-backend#readme",
   "devDependencies": {
     "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
     "jest": "^25.3.0",
     "nodemon": "^2.0.3"
   },
