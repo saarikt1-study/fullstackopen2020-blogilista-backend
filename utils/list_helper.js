@@ -26,6 +26,7 @@ const favoriteBlog = (blogs) => {
 }
 
 const mostBlogs = (blogs) => {
+  // Create object with authors and their blog counts respectively
   const countedAuthors = blogs
     .reduce((allAuthors, currentBlog) => {
       if (currentBlog.author in allAuthors) {
@@ -35,22 +36,19 @@ const mostBlogs = (blogs) => {
       }
       return allAuthors
     }, {})
-  
-  console.log('countedBlogs', countedAuthors)
-  const maxCount = Math.max(...Object.values(countedAuthors))
 
-  const authorArray = Object.entries(countedAuthors)
-
-  const mostProductiveAuthor = authorArray.filter(author => author[1] === maxCount)
-
-  console.log('last: ', mostProductiveAuthor)
-  
-  return (
-    {
-      author: mostProductiveAuthor[0][0],
-      blogs: mostProductiveAuthor[0][1]
+  let mostProductiveAuthor = {}
+    
+  for (let [key, value] of Object.entries(countedAuthors)) {
+    if (!mostProductiveAuthor.value || mostProductiveAuthor.value < value) {
+      mostProductiveAuthor = {
+        author: key,
+        blogs: value
+      }
     }
-  )
+  }
+
+  return mostProductiveAuthor
 }
 
 module.exports = {
