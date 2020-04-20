@@ -4,8 +4,9 @@
   "description": "An exercise project for the course FullStackOpen2020",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose",
-    "dev": "nodemon index.js"
+    "start": "NODE_ENV=production node index.js",
+    "test": "NODE_ENV=test jest --verbose --runInBand",
+    "dev": "NODE_ENV=development nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,8 @@
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
     "jest": "^25.3.0",
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.3",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "cors": "^2.8.5",
