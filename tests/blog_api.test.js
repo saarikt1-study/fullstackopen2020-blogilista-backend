@@ -32,6 +32,27 @@ test('id parameter is actually called id', async () => {
   }
 })
 
+test('a valid blog can be added ', async () => {
+  const newBlog = {
+    title: 'A Test Blog',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+    likes: 0
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  const titles = blogsAtEnd.map(b => b.title)
+  expect(titles).toContain('A Test Blog')
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
