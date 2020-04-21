@@ -54,12 +54,26 @@ test('a valid blog can be added ', async () => {
 })
 
 test('likes value is initialized as 0, if not otherwise defined', async () => {
+  const noLikesBlog = {
+    title: 'No Likes',
+    author: 'Grumpy cat',
+    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(noLikesBlog)
+
   const response = await api.get('/api/blogs')
 
-  for (let blog of response.body) {
-    expect(blog.likes).toBeDefined()
-  }
+  const noLikesBlogAfterAdding = response.body.find(blog => blog.title === 'No Likes')
+
+  expect(noLikesBlogAfterAdding.likes).toBe(0)
 })
+
+// test('a blog without title and url returns 400' async () => {
+
+// })
 
 afterAll(() => {
   mongoose.connection.close()
