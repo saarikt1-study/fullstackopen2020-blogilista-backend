@@ -71,9 +71,17 @@ test('likes value is initialized as 0, if not otherwise defined', async () => {
   expect(noLikesBlogAfterAdding.likes).toBe(0)
 })
 
-// test('a blog without title and url returns 400' async () => {
+test('a blog without title and url returns 400', async () => {
+  const imperfectBlog = {
+    author: 'Some dudette',
+    like: 3
+  }
 
-// })
+  await api
+    .post('/api/blogs')
+    .send(imperfectBlog)
+    .expect(400)
+})
 
 afterAll(() => {
   mongoose.connection.close()

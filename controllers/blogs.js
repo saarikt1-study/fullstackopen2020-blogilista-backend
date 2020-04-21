@@ -14,13 +14,13 @@ blogsRouter.post('/', async (request, response) => {
   }
 
   if (!blog.title && !blog.url) {
-    response.status(400)
+    response.status(400).end()
+  } else {
+    const savedBlog = await blog.save()
+    response
+      .status(201)
+      .json(savedBlog.toJSON())    
   }
-
-  const savedBlog = await blog.save()
-  response
-    .status(201)
-    .json(savedBlog.toJSON())
 })
 
 module.exports = blogsRouter
