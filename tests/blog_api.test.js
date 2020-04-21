@@ -53,6 +53,14 @@ test('a valid blog can be added ', async () => {
   expect(titles).toContain('A Test Blog')
 })
 
+test('likes value is initialized as 0, if not otherwise defined', async () => {
+  const response = await api.get('/api/blogs')
+
+  for (let blog of response.body) {
+    expect(blog.likes).toBeDefined()
+  }
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
