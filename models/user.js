@@ -7,6 +7,8 @@ mongoose.set('useCreateIndex', true)
 const userSchema = mongoose.Schema({
   username: {
     type: String,
+    minlength: [3, 'Username has to be at least 3 characters long'],
+    required: [true, 'Username cannot be empty'],
     unique: true
   },
   name: String,
