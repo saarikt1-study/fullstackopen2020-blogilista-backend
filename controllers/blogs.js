@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+require('express-async-errors')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
@@ -15,7 +16,6 @@ blogsRouter.delete('/:id', async (request, response) => {
 
 blogsRouter.put('/:id', async (request, response) => {
   const body = request.body
-  console.log('body: ', body)
 
   const newBlog = {
     title: body.title,
