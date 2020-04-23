@@ -1,5 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRzYWFyaWthIiwiaWQiOiI1ZWEwMjkxODI0ZjhjMTdjNGUwNmJjMjMiLCJpYXQiOjE1ODc2Mjk0MzF9.jR-RC5syG6wEmwqlNd88-kxdnKo0ZPHuXrAdcGGKcZk
 
 {
   "title": "The Best Blog 5",
