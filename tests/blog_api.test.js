@@ -5,14 +5,53 @@ const app = require('../app')
 const Blog = require('../models/blog')
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 const api = supertest(app)
 
 describe('handling blogs', () => {
 
+  let savedUser, token
+
   beforeEach(async () => {
+    console.log('Running beforeEach funcion, initializing the database')
+    // Delete blogs and users
     await Blog.deleteMany({})
-    await Blog.insertMany(helper.initialBlogs)
+    await User.deleteMany({})
+    console.log('Deleted blog entries and users')
+
+    // Create a test user for the blog entries
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({
+      username: 'root',
+      passwordHash,
+    })
+
+    // Save the user to the db
+    savedUser = await user.save()
+    console.log(`Created and saved user ${savedUser._id} to the db`)
+
+    const userForToken = {
+      username: 'root',
+      id: savedUser._id,
+    }
+
+    token = jwt.sign(userForToken, process.env.SECRET)
+
+    // Initialize a blogObjects array and fill it with blogs
+    const blogObjects = helper.initialBlogs
+      .map(blog => new Blog(blog))
+
+    console.log('Blog objects before user', blogObjects[0])
+
+    for (let entry of blogObjects) {
+      entry.user = savedUser._id
+    }
+
+    console.log('Blog objects after adding user: ', blogObjects[0])
+
+    const promiseArray = blogObjects.map(blog => blog.save())
+    await Promise.all(promiseArray)
   })
 
   test('blogs are returned as json', async () => {
@@ -46,6 +85,7 @@ describe('handling blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -66,6 +106,7 @@ describe('handling blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(noLikesBlog)
 
     const response = await api.get('/api/blogs')
@@ -83,6 +124,7 @@ describe('handling blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(imperfectBlog)
       .expect(400)
   })
@@ -91,8 +133,11 @@ describe('handling blogs', () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
 
+    console.log('BLOGTODELETE from test: ', blogToDelete)
+
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `bearer ${token}`)
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
@@ -137,6 +182,7 @@ describe('when there is initially one user at db', () => {
     })
 
     await user.save()
+
   })
 
   test('creation succeeds with a fresh username', async () => {
