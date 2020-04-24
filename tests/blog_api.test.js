@@ -14,11 +14,9 @@ describe('handling blogs', () => {
   let savedUser, token
 
   beforeEach(async () => {
-    console.log('Running beforeEach funcion, initializing the database')
     // Delete blogs and users
     await Blog.deleteMany({})
     await User.deleteMany({})
-    console.log('Deleted blog entries and users')
 
     // Create a test user for the blog entries
     const passwordHash = await bcrypt.hash('sekret', 10)
@@ -29,7 +27,6 @@ describe('handling blogs', () => {
 
     // Save the user to the db
     savedUser = await user.save()
-    console.log(`Created and saved user ${savedUser._id} to the db`)
 
     const userForToken = {
       username: 'root',
@@ -42,13 +39,9 @@ describe('handling blogs', () => {
     const blogObjects = helper.initialBlogs
       .map(blog => new Blog(blog))
 
-    console.log('Blog objects before user', blogObjects[0])
-
     for (let entry of blogObjects) {
       entry.user = savedUser._id
     }
-
-    console.log('Blog objects after adding user: ', blogObjects[0])
 
     const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
@@ -97,6 +90,26 @@ describe('handling blogs', () => {
     expect(titles).toContain('A Test Blog')
   })
 
+  test('creating a blog without a token returns 401', async () => {
+    const newBlog = {
+      title: 'A Test Blog without token',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+      likes: 0
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(401)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+    const titles = blogsAtEnd.map(b => b.title)
+    expect(titles).not.toContain('without token')
+  })
+
   test('likes value is initialized as 0, if not otherwise defined', async () => {
     const noLikesBlog = {
       title: 'No Likes',
@@ -132,8 +145,6 @@ describe('handling blogs', () => {
   test('a blog can be deleted', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
-
-    console.log('BLOGTODELETE from test: ', blogToDelete)
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
