@@ -1,11 +1,10 @@
-POST http://localhost:3003/api/blogs
+POST http://localhost:3001/api/blogs
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRzYWFyaWthIiwiaWQiOiI1ZWEwMjkxODI0ZjhjMTdjNGUwNmJjMjMiLCJpYXQiOjE1ODc2Mjk0MzF9.jR-RC5syG6wEmwqlNd88-kxdnKo0ZPHuXrAdcGGKcZk
 
 {
-  "title": "The Best Blog 6",
+  "title": "The Best Blog 9",
   "author": "The coolest writer",
   "url": "https://www.bestblog.com",
-  "likes": 43,
-  "userId": "5ea0291824f8c17c4e06bc23"
+  "likes": 43
 }
