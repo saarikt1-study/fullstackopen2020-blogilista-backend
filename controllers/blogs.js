@@ -61,9 +61,10 @@ blogsRouter.put('/:id', async (request, response) => {
 
 blogsRouter.post('/:id/comments', async (request, response) => {
   const blog = await Blog.findById(request.params.id)
-
+  
+  const commentsArray = request.body.comments
   const comment = new Comment({
-    content: request.body.content,
+    content: commentsArray[commentsArray.length-1].content,
     blog: blog._id
   })
 
